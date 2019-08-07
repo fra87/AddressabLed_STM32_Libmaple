@@ -20,25 +20,24 @@
 
 // Set the SPI clock divisor to as close to 400ns as we can;
 // the WS2812 spec allows for +/- 150ns
-#if F_CPU == 72000000L
-  #define ADDRESSABLED_SPI_DIVISOR SPI_CLOCK_DIV32 // 444ns
-#elif F_CPU == 64000000L
-  #define ADDRESSABLED_SPI_DIVISOR SPI_CLOCK_DIV32 // 500ns
-#elif F_CPU == 48000000L
-  #define ADDRESSABLED_SPI_DIVISOR SPI_CLOCK_DIV16 // 333ns
-#elif F_CPU == 40000000L
-  #define ADDRESSABLED_SPI_DIVISOR SPI_CLOCK_DIV16 // 400ns
-#elif F_CPU == 36000000L
-  #define ADDRESSABLED_SPI_DIVISOR SPI_CLOCK_DIV16 // 444ns
-#elif F_CPU == 24000000L
-  #define ADDRESSABLED_SPI_DIVISOR SPI_CLOCK_DIV8 // 333ns
-#elif F_CPU == 16000000L
-  #define ADDRESSABLED_SPI_DIVISOR SPI_CLOCK_DIV8 // 500ns
-#elif F_CPU == 8000000L
-  #define ADDRESSABLED_SPI_DIVISOR SPI_CLOCK_DIV4 // 500ns
-#else
-  #error No clock divisor available for this F_CPU
-#endif
+// Selecting a frequency here means we can have a frequency
+// between the specified one and half of it.
+// In fact, the selected divider is the smallest n so that
+// f_SPI > F_CPU / 2^n
+// A target of 400ns corresponds to 2.5MHz; let's choose 3.5 MHz,
+// which corresponds to:
+// F_CPU  | n (divider) | Bit time
+//-----------------------------------
+// 72 MHz |   5 (32)    | 444 ns
+// 64 MHz |   5 (32)    | 500 ns
+// 48 MHz |   4 (16)    | 333 ns
+// 40 MHz |   4 (16)    | 400 ns
+// 36 MHz |   4 (16)    | 444 ns
+// 24 MHz |   3 ( 8)    | 333 ns
+// 16 MHz |   3 ( 8)    | 500 ns
+//  8 MHz |   2 ( 4)    | 500 ns
+
+#define ADDRESSABLED_SPI_TARGET_FREQUENCY 3500000
 
 /**
   Generic base class for the LEDs

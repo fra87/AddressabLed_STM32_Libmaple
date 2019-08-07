@@ -27,7 +27,7 @@
 #include "AddressabLed.h"
 #include "pins_arduino.h"
 #include "wiring_private.h"
-#include <SPI.h>
+#include <SPI_DMA.h>
 
 /*
  * old version used 3 separate tables, one per byte of the 24 bit encoded data
@@ -58,15 +58,14 @@ AddressabLed_Base::~AddressabLed_Base()
   {
     free(pixels);
   }
-  SPI.end();
+  SPIDMA.end();
 }
 
 void AddressabLed_Base::begin(void)
 {
   if (!begun)
   {
-    SPI.setClockDivider(ADDRESSABLED_SPI_DIVISOR);
-    SPI.begin();
+    SPIDMA.beginTransaction(SPISettings(ADDRESSABLED_SPI_TARGET_FREQUENCY, MSBFIRST, SPI_MODE_0));
     begun = true;
   }
 }
@@ -74,7 +73,7 @@ void AddressabLed_Base::begin(void)
 void AddressabLed_Base::show(boolean cloneBuffer) 
 {
   // Start the DMA transfer of the current pixel buffer to the LEDs and return immediately.
-  SPI.dmaSendAsync(pixels,numBytes);
+  SPIDMA.send(pixels,numBytes);
 
   // Sometimes there is no need to copy the last / current buffer to the other half of the
   // double buffer (e.g. when the program writes the whole buffer every time).
