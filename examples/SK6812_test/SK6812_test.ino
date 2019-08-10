@@ -3,10 +3,13 @@
 #define NUM_LEDS 30
 /*
  * Note. Library uses SPI1
- * Connect the WS2812B data input to MOSI on your board.
+ * Connect the SK6812 data input to MOSI on your board.
  * 
+ * This is the same as the WS2812B example, just with RGBW leds
+ * In the pulseWhite cycle, LEDs are alternating LED white and
+ * LED full RGB (i.e. white with the RGB leds)
  */
-AddressabLed_RGB strip = AddressabLed_RGB(NUM_LEDS);
+AddressabLed_RGBW strip = AddressabLed_RGBW(NUM_LEDS);
 // Note. Gamma is not really supported in the library, its only included as some functions used in this example require Gamma
 uint8_t LEDGamma[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -169,7 +172,7 @@ void pulseWhite(uint8_t wait)
   {
     for(uint16_t i=0; i<strip.numPixels(); i++)
     {
-      strip.setPixelColor(i, strip.Color(LEDGamma[j],LEDGamma[j],LEDGamma[j] ) );
+      strip.setPixelColor(i, (i%2) ? strip.Color(LEDGamma[j],LEDGamma[j],LEDGamma[j]) : strip.Color(0,0,0,LEDGamma[j]) );
     }
     delay(wait);
     strip.show(false);
@@ -179,7 +182,7 @@ void pulseWhite(uint8_t wait)
   {
     for(uint16_t i=0; i<strip.numPixels(); i++)
     {
-      strip.setPixelColor(i, strip.Color(LEDGamma[j],LEDGamma[j],LEDGamma[j] ) );
+      strip.setPixelColor(i, (i%2) ? strip.Color(LEDGamma[j],LEDGamma[j],LEDGamma[j]) : strip.Color(0,0,0,LEDGamma[j]) );
     }
     delay(wait);
     strip.show(false);
