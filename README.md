@@ -14,8 +14,7 @@ case the compatibility with the aforementioned library could not be kept.
 
 Connect Data In of the strip to SPI1 MOSI
 
-**This library currently has not been tested.**
-Plans are to test it on the WS2812B and SK6812 LEDs.
+This library has been tested on the WS2812B (RGB) and SK6812 (RGBW) LEDs.
 It may not work with the older WS2812 or other types of addressable RGB(W) LED,
 because it relies on a division multiple of the 72Mhz clock frequence on the
 STM32 SPI to generate the correct width T0H pulse, of 400ns +/- 150nS SPI DIV32

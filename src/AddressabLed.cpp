@@ -49,7 +49,6 @@ static const uint8_t encoderLookup[256*bytesPerColor]={
 
 AddressabLed_Base::AddressabLed_Base(uint16_t number_of_leds) : pixels(NULL)
 {
-  updateLength(number_of_leds);
 }
 
 AddressabLed_Base::~AddressabLed_Base() 
@@ -136,7 +135,7 @@ void AddressabLed_Base::updateLength(uint16_t n)
     clear();// Set the encoded data to all encoded zeros
     
     // Since cloning the buffer is optional, the second buffer must be cloned now
-    memcpy(pixels,doubleBuffer+numBytes,numBytes);
+    memcpy(doubleBuffer+numBytes,pixels,numBytes);
   } 
   else
   {
@@ -146,6 +145,11 @@ void AddressabLed_Base::updateLength(uint16_t n)
 
 uint16_t AddressabLed_Base::numPixels(void) const {
   return numLEDs;
+}
+
+AddressabLed_RGB::AddressabLed_RGB(uint16_t number_of_leds) : AddressabLed_Base(number_of_leds)
+{
+  updateLength(number_of_leds);
 }
 
 void AddressabLed_RGB::setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b)
@@ -183,6 +187,11 @@ uint32_t AddressabLed_RGB::Color(uint8_t r, uint8_t g, uint8_t b)
   result = (result << 8) | g;
   result = (result << 8) | b;
   return result;
+}
+
+AddressabLed_RGBW::AddressabLed_RGBW(uint16_t number_of_leds) : AddressabLed_Base(number_of_leds)
+{
+  updateLength(number_of_leds);
 }
 
 void AddressabLed_RGBW::setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w)

@@ -103,7 +103,7 @@ class AddressabLed_RGB : public AddressabLed_Base
 
   // Constructor
   // number_of_leds: number of LEDs in the strip
-  AddressabLed_RGB(uint16_t number_of_leds) : AddressabLed_Base(number_of_leds) {}
+  AddressabLed_RGB(uint16_t number_of_leds);
   
   // Sets pixel with ID n with the specified color
   void setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b);
@@ -120,7 +120,7 @@ class AddressabLed_RGB : public AddressabLed_Base
   static const uint8_t colorsPerPixel = 3;
   
   // Overridden method to get static value
-  uint8_t getColorsPerPixel(void) const { return colorsPerPixel; }
+  virtual uint8_t getColorsPerPixel(void) const { return colorsPerPixel; }
 };
 
 class AddressabLed_RGBW : public AddressabLed_Base
@@ -129,7 +129,7 @@ class AddressabLed_RGBW : public AddressabLed_Base
 
   // Constructor
   // number_of_leds: number of LEDs in the strip
-  AddressabLed_RGBW(uint16_t number_of_leds) : AddressabLed_Base(number_of_leds) {}
+  AddressabLed_RGBW(uint16_t number_of_leds);
   
   // Sets pixel with ID n with the specified color (W = 0)
   void setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b) { setPixelColor(n,r,g,b,0); }
@@ -153,7 +153,7 @@ class AddressabLed_RGBW : public AddressabLed_Base
   static const uint8_t colorsPerPixel = 4;
   
   // Overridden method to get static value
-  uint8_t getColorsPerPixel(void) const { return colorsPerPixel; }
+  virtual uint8_t getColorsPerPixel(void) const { return colorsPerPixel; }
 };
 
 #endif // ADDRESSABLED_H
